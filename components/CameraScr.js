@@ -56,6 +56,18 @@ const CameraScr = () => {
     );
   };
 
+  const newPost = async (data) => {
+    await fetch(`${baseUrl}/posts`, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json"
+      },
+      body: JSON.stringify({
+        data
+      })
+    }).then(resp => resp.json());
+  }
+
   const onSnap = async () => {
     if (cameraRef.current) {
       const options = { quality: 0.7, base64: true };
@@ -84,9 +96,9 @@ const CameraScr = () => {
           .then(async response => {
             let data = await response.json();
             if (data.secure_url) {
-              // Post.create({
-              //   imageLink: data.secure_url,
-              // })
+              newPost({ //places cloudinary link on mongo
+                imageLink: data.secure_url,
+              })
             }
           })
           .catch(err => {
