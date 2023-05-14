@@ -13,7 +13,7 @@ const WINDOW_WIDTH = Dimensions.get('window').width;
 var postColor, friendsColor, homeColor;
 
 export default function App() {
-  const [appPage, setAppPage] = useState('C');
+  const [appPage, setAppPage] = useState('H');
 
   postColor = appPage == 'C' ? "#fff" : "#dbdbdb"
   friendsColor = appPage == 'F' ? "#fff" : "#dbdbdb"
@@ -31,13 +31,13 @@ export default function App() {
     <View flexDirection={'column'}>
       {activeScreen()}
       <View style={styles.footer} backgroundColor={'#c8c8c8'}>
-        <TouchableOpacity style={{backgroundColor: friendsColor}} >
+        <TouchableOpacity style={{backgroundColor: friendsColor}} onPress={() => setAppPage('C')}>
           <Text style={styles.sideBox}>Friends</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{backgroundColor: postColor}}>
+        <TouchableOpacity style={{backgroundColor: postColor}} onPress={() => setAppPage('C')}>
           <Text style={styles.midBox}>Post</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{backgroundColor: homeColor}} >
+        <TouchableOpacity style={{backgroundColor: homeColor}} onPress={() => setAppPage('H')}>
           <Text style={styles.sideBox}>Home</Text>
         </TouchableOpacity>
       </View>

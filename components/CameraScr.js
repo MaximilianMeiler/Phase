@@ -74,7 +74,7 @@ const CameraScr = () => {
           upload_preset: 'lpocrtuh'
         };
   
-        fetch(apiUrl, {
+        fetch(apiUrl, { //this places image on cloudinary
           body: JSON.stringify(data),
           headers: {
             'content-type': 'application/json'
