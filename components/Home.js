@@ -26,16 +26,15 @@ const Home = () => {
   }, []);
 
   return (
-    <ScrollView height={WINDOW_HEIGHT+30}>
-      <View style={styles.container}>
-        <Text style={{marginTop:200}}>Home text</Text>
-        
+    <ScrollView height={WINDOW_HEIGHT} marginBottom={30}>
+      <View style={styles.container} marginVertical={50}>
         {posts.map(post => <Image
             source={{
-              uri: post.link,
+              uri: post.data.imageLink,
             }}
             style={{width: 200, height: 200}}
             key={post._id}
+            marginVertical={10}
           />
         )}
         <StatusBar style="auto" />

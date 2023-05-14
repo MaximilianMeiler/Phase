@@ -9,13 +9,15 @@ import {
 } from 'react-native';
 import { Camera } from 'expo-camera';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
-
 import 'react-native-get-random-values'
+
+const baseUrl = "https://testapi-silk-eight.vercel.app";
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 const CAPTURE_SIZE = Math.floor(WINDOW_HEIGHT * 0.08);
 const WINDOW_WIDTH = Dimensions.get('window').width;
 var RATIO_UNIT;
+
 
 const DIMENSION_RATIO = Camera.defaultProps.ratio.split(':');
 if (WINDOW_HEIGHT / DIMENSION_RATIO[0] > WINDOW_WIDTH / DIMENSION_RATIO[1]) {
