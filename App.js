@@ -11,12 +11,17 @@ import {
   Dimensions,
 } from 'react-native';
 
+
+const baseUrl = "https://testapi-silk-eight.vercel.app";
+
+
 const WINDOW_WIDTH = Dimensions.get('window').width;
 var UUID;
 
 export default function App() {
   const [appPage, setAppPage] = useState('H');
-  //const [updateFlag, setUpdateFlag] = useState(0);
+  const [name, setName] = useState("");
+  const [users, setUsers] = useState([]);
 
   var postColor = appPage == 'C' ? "#fff" : "#dbdbdb"
   var friendsColor = appPage == 'F' ? "#fff" : "#dbdbdb"
@@ -29,13 +34,14 @@ export default function App() {
 
   useEffect(() => { //runs on first load
     getID();
-  }, []);
+    alert(UUID)
+  }, [name]);
 
   const activeScreen = () => {
     if (appPage == 'H') {
       return <Home/>
     } else if (appPage == 'C') {
-      return <CameraScr/>
+      return <CameraScr baseUrl={baseUrl}/>
     }
   }
 
@@ -59,13 +65,11 @@ export default function App() {
   }
 
   return (
-    UUID ? 
       <View flexDirection={'column'}>
+        <Signin name={name} setName={setName} baseUrl={baseUrl}/>
         {activeScreen()}
         {footer()}
       </View>
-    :
-      <Signin/>
   );
 }
 
