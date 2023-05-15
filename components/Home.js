@@ -9,22 +9,9 @@ import {
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 
-const baseUrl = "https://testapi-silk-eight.vercel.app";
-
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
-const Home = () => {
-  const [posts, setPosts] = useState([]);
-
-  const loadPosts = async () => {
-    let results = await fetch(`${baseUrl}/posts`).then(resp => resp.json());
-    setPosts(results);
-  }
-
-  useEffect(() => { //runs on first load
-    loadPosts();
-  }, []);
-
+const Home = ({baseUrl, posts}) => {
   return (
     <ScrollView height={WINDOW_HEIGHT} marginBottom={30}>
       <View style={styles.container} marginVertical={50}>

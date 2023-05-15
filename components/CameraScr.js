@@ -66,6 +66,8 @@ const CameraScr = ({baseUrl}) => {
         data
       })
     }).then(resp => resp.json());
+
+    // concat to passed posts??
   }
 
   const onSnap = async () => {

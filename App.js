@@ -22,6 +22,7 @@ export default function App() {
   const [appPage, setAppPage] = useState('H');
   const [name, setName] = useState("");
   const [users, setUsers] = useState([]);
+  const [posts, setPosts] = useState([]);
 
   var postColor = appPage == 'C' ? "#fff" : "#dbdbdb"
   var friendsColor = appPage == 'F' ? "#fff" : "#dbdbdb"
@@ -32,14 +33,25 @@ export default function App() {
     UUID = await SecureStore.getItemAsync('secure_deviceid');
   }
 
+  const loadPosts = async () => {
+    let results = await fetch(`${baseUrl}/posts`).then(resp => resp.json());
+    setPosts(results);
+  }
+
+  const loadUsers = async () => {
+    let results = await fetch(`${baseUrl}/users`).then(resp => resp.json());
+    setUsers(results);
+  }
+
   useEffect(() => { //runs on first load
     getID();
-    alert(UUID)
-  }, [name]);
+    loadPosts();
+    loadUsers();
+  }, [name, appPage]);
 
   const activeScreen = () => {
     if (appPage == 'H') {
-      return <Home/>
+      return <Home baseUrl={baseUrl} posts={posts}/>
     } else if (appPage == 'C') {
       return <CameraScr baseUrl={baseUrl}/>
     }
