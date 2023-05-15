@@ -1,5 +1,7 @@
 import Home from './components/Home'
 import CameraScr from "./components/CameraScr"
+import Signin from "./components/Signin"
+import * as SecureStore from 'expo-secure-store';
 import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
@@ -10,14 +12,24 @@ import {
 } from 'react-native';
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
+var UUID;
 
 export default function App() {
   const [appPage, setAppPage] = useState('H');
+  //const [updateFlag, setUpdateFlag] = useState(0);
 
   var postColor = appPage == 'C' ? "#fff" : "#dbdbdb"
   var friendsColor = appPage == 'F' ? "#fff" : "#dbdbdb"
   var homeColor = appPage == 'H' ? "#fff" : "#dbdbdb"
   var userColor = appPage == 'U' ? "#fff" : "#dbdbdb"
+
+  const getID = async () => {
+    UUID = await SecureStore.getItemAsync('secure_deviceid');
+  }
+
+  useEffect(() => { //runs on first load
+    getID();
+  }, []);
 
   const activeScreen = () => {
     if (appPage == 'H') {
@@ -47,11 +59,13 @@ export default function App() {
   }
 
   return (
-
-    <View flexDirection={'column'}>
-      {activeScreen()}
-      {footer()}
-    </View>
+    UUID ? 
+      <View flexDirection={'column'}>
+        {activeScreen()}
+        {footer()}
+      </View>
+    :
+      <Signin/>
   );
 }
 

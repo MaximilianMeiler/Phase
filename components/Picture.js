@@ -1,7 +1,7 @@
-import { Image } from "react-native";
+// import { Image } from "react-native";
 
-const Picture = () => {
-  return {
-    <Image><Image
-  }
-}
+// const Picture = () => {
+//   return {
+//     <Image><Image
+//   }
+// }
