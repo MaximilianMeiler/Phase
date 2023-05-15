@@ -10,14 +10,14 @@ import {
 } from 'react-native';
 
 const WINDOW_WIDTH = Dimensions.get('window').width;
-var postColor, friendsColor, homeColor;
 
 export default function App() {
   const [appPage, setAppPage] = useState('H');
 
-  postColor = appPage == 'C' ? "#fff" : "#dbdbdb"
-  friendsColor = appPage == 'F' ? "#fff" : "#dbdbdb"
-  homeColor = appPage == 'H' ? "#fff" : "#dbdbdb"
+  var postColor = appPage == 'C' ? "#fff" : "#dbdbdb"
+  var friendsColor = appPage == 'F' ? "#fff" : "#dbdbdb"
+  var homeColor = appPage == 'H' ? "#fff" : "#dbdbdb"
+  var userColor = appPage == 'U' ? "#fff" : "#dbdbdb"
 
   const activeScreen = () => {
     if (appPage == 'H') {
@@ -27,9 +27,8 @@ export default function App() {
     }
   }
 
-  return (
-    <View flexDirection={'column'}>
-      {activeScreen()}
+  const footer = () => {
+    return (
       <View style={styles.footer} backgroundColor={'#c8c8c8'}>
         <TouchableOpacity style={{backgroundColor: friendsColor}} onPress={() => setAppPage('C')}>
           <Text style={styles.sideBox}>Friends</Text>
@@ -38,9 +37,20 @@ export default function App() {
           <Text style={styles.midBox}>Post</Text>
         </TouchableOpacity>
         <TouchableOpacity style={{backgroundColor: homeColor}} onPress={() => setAppPage('H')}>
-          <Text style={styles.sideBox}>Home</Text>
+          <Text style={styles.midBox}>Home</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={{backgroundColor: userColor}} onPress={() => setAppPage('H')}>
+          <Text style={styles.sideBox}>User</Text>
         </TouchableOpacity>
       </View>
+    )
+  }
+
+  return (
+
+    <View flexDirection={'column'}>
+      {activeScreen()}
+      {footer()}
     </View>
   );
 }
