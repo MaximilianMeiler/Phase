@@ -9,16 +9,18 @@ import {
   Button,
   TextInput,
 } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 var UUID;
 
 
-const Signin = ({name, setName, baseUrl}) => {
-  const [textVal, setTextVal] = useState("");
+const Signin = ({user, setUser, baseUrl}) => {
+  const [textVal, setTextVal] = useState("Unnamed User");
 
   const newUser = async (data) => {
+    //ADD CHECKS TO ENSURE VALID NAME
+
     await fetch(`${baseUrl}/users`, {
       method: "POST",
       headers: {
@@ -28,33 +30,54 @@ const Signin = ({name, setName, baseUrl}) => {
         data
       })
     }).then(resp => resp.json());
+
+    let user = await fetch(`${baseUrl}/users/${UUID}`).then(resp => resp.json())
+      .catch((e) => console.log(e));
+    if (user) {
+      setUser(user);
+    }
   }
 
-  const updateID = async (val) => {
-    //ADD CHECKS TO ENSURE VALID NAME
-  
+  const updateID = async () => {
     UUID = await SecureStore.getItemAsync('secure_deviceid');
-    if (!UUID) {
-      let UUID = uuidv4();
-      await SecureStore.setItemAsync('secure_deviceid', JSON.stringify(UUID));
-    }
-  
-    newUser({ 
-      username: val,
-      deviceID: UUID,
-      friends: [],
-    })
+    if (UUID == "0" || !UUID) {
+      UUID = uuidv4();
+      await SecureStore.setItemAsync('secure_deviceid', UUID);
 
-    setName(val);
+      newUser({ 
+        username: textVal,
+        deviceID: UUID,
+        friends: [],
+      })
+    } else {
+      login();
+    }
   };
 
+  const login = async () =>  {
+    UUID = await SecureStore.getItemAsync('secure_deviceid');
+    if (UUID == "0" || !UUID) {
+      alert("No account detected!")
+    } else {
+      let user = await fetch(`${baseUrl}/users/${UUID}`).then(resp => resp.json())
+        .catch((e) => console.log(e));
+      if (user) {
+        setUser(user);
+      } else {
+        await SecureStore.setItemAsync('secure_deviceid', "0");
+        alert("The account data stored on your phone does not align with the accounts on the database. Please register a new account.");
+      }
+    }
+  }
+
   return (
-    name.length == 0 ?
-    <View height={WINDOW_HEIGHT} justifyContent={'center'} alignItems={'center'}>
-      <Text>Enter your username:</Text>
-      <TextInput placeholder='SwagLord420' onChangeText={val => setTextVal(val)} ></TextInput>
-      <Button title="Save" onPress={() => updateID(textVal)}></Button>
-    </View>
+    user.data.username.length == 0 ?
+      <View height={WINDOW_HEIGHT} justifyContent={'center'} alignItems={'center'}>
+        <Button title="Login" onPress={() => login()}></Button>
+        <Text>Or, enter a username to signup:</Text>
+        <TextInput placeholder='SwagLord420' onChangeText={val => setTextVal(val)} ></TextInput>
+        <Button title="Register" onPress={() => updateID()}></Button>
+      </View>
     : <></>
   )
 }

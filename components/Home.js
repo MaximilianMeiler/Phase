@@ -8,23 +8,18 @@ import {
   Dimensions,
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import Post from "../components/Post"
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
-const Home = ({baseUrl, posts}) => {
+const Home = ({posts}) => {
+
   return (
-    <ScrollView height={WINDOW_HEIGHT} marginBottom={30}>
-      <View style={styles.container} marginVertical={50}>
-        {posts.map(post => <Image
-            source={{
-              uri: post.data.imageLink,
-            }}
-            style={{width: 200, height: 200}}
-            key={post._id}
-            marginVertical={10}
-          />
+    <ScrollView height={WINDOW_HEIGHT} >
+      <View style={styles.container} marginTop={30} marginBottom={80}>
+        {posts.map(post => 
+          <Post post={post} key={post._id}/>
         )}
-        <StatusBar style="auto" />
       </View> 
     </ScrollView>
   );

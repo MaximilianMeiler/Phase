@@ -20,7 +20,7 @@ var UUID;
 
 export default function App() {
   const [appPage, setAppPage] = useState('H');
-  const [name, setName] = useState("");
+  const [user, setUser] = useState({data: {username: ""}});
   const [users, setUsers] = useState([]);
   const [posts, setPosts] = useState([]);
 
@@ -35,7 +35,7 @@ export default function App() {
 
   const loadPosts = async () => {
     let results = await fetch(`${baseUrl}/posts`).then(resp => resp.json());
-    setPosts(results);
+    setPosts(results.reverse());
   }
 
   const loadUsers = async () => {
@@ -47,13 +47,13 @@ export default function App() {
     getID();
     loadPosts();
     loadUsers();
-  }, [name, appPage]);
+  }, [user.data.username, appPage]);
 
   const activeScreen = () => {
     if (appPage == 'H') {
-      return <Home baseUrl={baseUrl} posts={posts}/>
+      return <Home posts={posts}/>
     } else if (appPage == 'C') {
-      return <CameraScr baseUrl={baseUrl}/>
+      return <CameraScr baseUrl={baseUrl} user={user}/>
     }
   }
 
@@ -78,7 +78,7 @@ export default function App() {
 
   return (
       <View flexDirection={'column'}>
-        <Signin name={name} setName={setName} baseUrl={baseUrl}/>
+        <Signin user={user} setUser={setUser} baseUrl={baseUrl}/>
         {activeScreen()}
         {footer()}
       </View>

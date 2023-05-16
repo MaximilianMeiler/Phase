@@ -25,7 +25,7 @@ if (WINDOW_HEIGHT / DIMENSION_RATIO[0] > WINDOW_WIDTH / DIMENSION_RATIO[1]) {
 }
 
 
-const CameraScr = ({baseUrl}) => {
+const CameraScr = ({baseUrl, user}) => {
   const cameraRef = useRef();
   const [hasPermission, setHasPermission] = useState(null);
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
@@ -100,6 +100,7 @@ const CameraScr = ({baseUrl}) => {
             if (data.secure_url) {
               newPost({ //places cloudinary link on mongo
                 imageLink: data.secure_url,
+                poster: user._id,
               })
             }
           })
