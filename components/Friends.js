@@ -39,10 +39,18 @@ const Friends = ({baseUrl, user, users}) => {
         <Text>Incoming</Text>
         {users.filter(u => u.data.requests.indexOf(user._id) >= 0)
           .map(u => 
-            <View flexDirection={"row"}>
+            <View flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
               <View marginVertical={5} marginLeft={10}>
                 <Text>{u.data.username}</Text>
                 <Text style={{color: "#a29f9f"}}>{u._id}</Text>
+              </View>
+              <View flexDirection={"row"}>
+                <TouchableOpacity onPress={() => setSearching(false)}>
+                  <AntDesign name='checkcircleo' size={25} marginHorizontal={5}/>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setSearching(false)}>
+                  <AntDesign name='closecircleo' size={25} marginRight={10}/>
+                </TouchableOpacity>
               </View>
             </View>
           )
@@ -50,22 +58,28 @@ const Friends = ({baseUrl, user, users}) => {
         <Text>Requested</Text>
         {users.filter(u => user.data.requests.indexOf(u._id) >= 0)
           .map(u => 
-            <View flexDirection={"row"}>
+            <View flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
               <View marginVertical={5} marginLeft={10}>
                 <Text>{u.data.username}</Text>
                 <Text style={{color: "#a29f9f"}}>{u._id}</Text>
               </View>
+              <TouchableOpacity onPress={() => setSearching(false)}>
+                <AntDesign name='adduser' size={25} marginHorizontal={10}/>
+              </TouchableOpacity>
             </View>
           )
         }
         <Text>Added</Text>
         {users.filter(u => user.data.friends.indexOf(u._id) >= 0)
           .map(u => 
-            <View flexDirection={"row"}>
+            <View flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
               <View marginVertical={5} marginLeft={10}>
                 <Text>{u.data.username}</Text>
                 <Text style={{color: "#a29f9f"}}>{u._id}</Text>
               </View>
+              <TouchableOpacity onPress={() => setSearching(false)}>
+                <AntDesign name='deleteuser' size={25} marginHorizontal={10}/>
+              </TouchableOpacity>
             </View>
           )
         }
