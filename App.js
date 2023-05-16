@@ -1,5 +1,6 @@
 import Home from './components/Home'
 import CameraScr from "./components/CameraScr"
+import Friends from "./components/Friends"
 import Signin from "./components/Signin"
 import * as SecureStore from 'expo-secure-store';
 import React, { useState, useEffect } from 'react';
@@ -54,13 +55,15 @@ export default function App() {
       return <Home posts={posts}/>
     } else if (appPage == 'C') {
       return <CameraScr baseUrl={baseUrl} user={user}/>
+    } else if (appPage == "F") {
+      return <Friends baseUrl={baseUrl} user={user} users={users}/>
     }
   }
 
   const footer = () => {
     return (
       <View style={styles.footer} backgroundColor={'#c8c8c8'}>
-        <TouchableOpacity style={{backgroundColor: friendsColor}} onPress={() => setAppPage('C')}>
+        <TouchableOpacity style={{backgroundColor: friendsColor}} onPress={() => setAppPage('F')}>
           <Text style={styles.sideBox}>Friends</Text>
         </TouchableOpacity>
         <TouchableOpacity style={{backgroundColor: postColor}} onPress={() => setAppPage('C')}>

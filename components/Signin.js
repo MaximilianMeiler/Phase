@@ -48,6 +48,7 @@ const Signin = ({user, setUser, baseUrl}) => {
         username: textVal,
         deviceID: UUID,
         friends: [],
+        requests: [],
       })
     } else {
       login();
