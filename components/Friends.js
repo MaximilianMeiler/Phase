@@ -35,11 +35,29 @@ const Friends = ({baseUrl, user, users}) => {
         : <></>}
       </View>
       {!searching ? 
-      <View>
+      <View marginLeft={10}>
         <Text>Incoming</Text>
-        {}
+        {users.filter(u => u.data.requests.indexOf(user._id) >= 0)
+          .map(u => 
+            <View flexDirection={"row"}>
+              <View marginVertical={5} marginLeft={10}>
+                <Text>{u.data.username}</Text>
+                <Text style={{color: "#a29f9f"}}>{u._id}</Text>
+              </View>
+            </View>
+          )
+        }
         <Text>Requested</Text>
-        {}
+        {users.filter(u => user.data.requests.indexOf(u._id) >= 0)
+          .map(u => 
+            <View flexDirection={"row"}>
+              <View marginVertical={5} marginLeft={10}>
+                <Text>{u.data.username}</Text>
+                <Text style={{color: "#a29f9f"}}>{u._id}</Text>
+              </View>
+            </View>
+          )
+        }
         <Text>Added</Text>
         {users.filter(u => user.data.friends.indexOf(u._id) >= 0)
           .map(u => 
