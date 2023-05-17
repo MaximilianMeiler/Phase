@@ -12,13 +12,13 @@ import Post from "../components/Post"
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
-const Home = ({posts}) => {
+const Home = ({posts, users}) => {
 
   return (
     <ScrollView height={WINDOW_HEIGHT} >
       <View style={styles.container} marginTop={30} marginBottom={80}>
         {posts.map(post => 
-          <Post post={post} key={post._id}/>
+          <Post post={post} users={users} key={post._id}/>
         )}
       </View> 
     </ScrollView>

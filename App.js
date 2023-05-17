@@ -24,6 +24,7 @@ export default function App() {
   const [user, setUser] = useState({data: {username: ""}});
   const [users, setUsers] = useState([]);
   const [posts, setPosts] = useState([]);
+  const [flag, setFlag] = useState(0);
 
   var postColor = appPage == 'C' ? "#fff" : "#dbdbdb"
   var friendsColor = appPage == 'F' ? "#fff" : "#dbdbdb"
@@ -48,15 +49,17 @@ export default function App() {
     getID();
     loadPosts();
     loadUsers();
-  }, [user.data.username, appPage]);
+    setUser(users.filter(u => u._id == user._id)[0])
+    console.log("DATA FETCHED");
+  }, [user.data.username, appPage, flag]);
 
   const activeScreen = () => {
     if (appPage == 'H') {
-      return <Home posts={posts}/>
+      return <Home posts={posts} users={users}/>
     } else if (appPage == 'C') {
       return <CameraScr baseUrl={baseUrl} user={user}/>
     } else if (appPage == "F") {
-      return <Friends baseUrl={baseUrl} user={user} users={users}/>
+      return <Friends baseUrl={baseUrl} user={user} users={users} flag={flag} setFlag={setFlag}/>
     }
   }
 

@@ -13,10 +13,59 @@ import { AntDesign } from '@expo/vector-icons';
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
-const Friends = ({baseUrl, user, users}) => {
+const Friends = ({baseUrl, user, users, flag, setFlag}) => {
   const [search, setSearch] = useState("");
   const [searching, setSearching] = useState(false);
 
+  const removeFriend = async (id1, id2) => {
+    await fetch(`${baseUrl}/users/frienddel/${id1}/${id2}`, {
+      method: "PATCH",
+    }).catch((e) => console.log(e))
+
+    await fetch(`${baseUrl}/users/frienddel/${id2}/${id1}`, {
+      method: "PATCH",
+    }).catch((e) => console.log(e))
+
+      // frontend change
+    users.filter(u => u._id == id1)[0].data.friends = 
+      users.filter(u => u._id == id1)[0].data.friends.filter(r => r != id2);
+    users.filter(u => u._id == id2)[0].data.friends = 
+      users.filter(u => u._id == id2)[0].data.friends.filter(r => r != id1);
+    setFlag(flag+1);
+  }
+
+  const acceptReq = async (id1, id2) => {
+    await fetch(`${baseUrl}/users/friendadd/${id1}/${id2}`, {
+      method: "PATCH",
+    }).catch((e) => console.log(e))
+    
+    await fetch(`${baseUrl}/users/friendadd/${id2}/${id1}`, {
+      method: "PATCH",
+    }).catch((e) => console.log(e))
+
+    removeReq(id2, id1);
+
+    // frontend change
+    users.filter(u => u._id == id1)[0].data.friends = 
+      users.filter(u => u._id == id1)[0].data.friends.concat([id2]);
+    users.filter(u => u._id == id2)[0].data.friends = 
+      users.filter(u => u._id == id2)[0].data.friends.concat([id1]);
+
+  }
+
+  const removeReq = async (id1, id2) => {
+    await fetch(`${baseUrl}/users/reqdel/${id1}/${id2}`, {
+      method: "PATCH",
+    }).catch((e) => console.log(e))
+
+    // frontend change
+    users.filter(u => u._id == id1)[0].data.requests = 
+      users.filter(u => u._id == id1)[0].data.requests.filter(r => r != id2);
+    setFlag(flag+1);
+  }
+
+  // useEffect(() => { //runs on first load
+  // }, [users]);
 
   return (
     <ScrollView height={WINDOW_HEIGHT} paddingTop={50}>
@@ -45,10 +94,10 @@ const Friends = ({baseUrl, user, users}) => {
                 <Text style={{color: "#a29f9f"}}>{u._id}</Text>
               </View>
               <View flexDirection={"row"}>
-                <TouchableOpacity onPress={() => setSearching(false)}>
+                <TouchableOpacity onPress={() => acceptReq(user._id, u._id)}>
                   <AntDesign name='checkcircleo' size={25} marginHorizontal={5}/>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => setSearching(false)}>
+                <TouchableOpacity onPress={() => removeReq(u._id, user._id)}>
                   <AntDesign name='closecircleo' size={25} marginRight={10}/>
                 </TouchableOpacity>
               </View>
@@ -63,8 +112,8 @@ const Friends = ({baseUrl, user, users}) => {
                 <Text>{u.data.username}</Text>
                 <Text style={{color: "#a29f9f"}}>{u._id}</Text>
               </View>
-              <TouchableOpacity onPress={() => setSearching(false)}>
-                <AntDesign name='adduser' size={25} marginHorizontal={10}/>
+              <TouchableOpacity onPress={() => removeReq(user._id, u._id)}>
+                <AntDesign name='deleteuser' size={25} marginHorizontal={10}/>
               </TouchableOpacity>
             </View>
           )
@@ -77,7 +126,7 @@ const Friends = ({baseUrl, user, users}) => {
                 <Text>{u.data.username}</Text>
                 <Text style={{color: "#a29f9f"}}>{u._id}</Text>
               </View>
-              <TouchableOpacity onPress={() => setSearching(false)}>
+              <TouchableOpacity onPress={() => removeFriend(user._id, u._id)}>
                 <AntDesign name='deleteuser' size={25} marginHorizontal={10}/>
               </TouchableOpacity>
             </View>

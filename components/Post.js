@@ -6,8 +6,10 @@ import {
   Image,
 } from 'react-native';
 
-const Post = ({post}) => {
+const Post = ({post, users}) => {
+  
   return (
+    users.length > 0 ?
     <View marginVertical={10}>
       {Object.hasOwn(post.data, "title") ?
           <Text>{post.data.title}</Text>
@@ -15,7 +17,7 @@ const Post = ({post}) => {
         
       <View flexDirection={"row"} justifyContent={"space-between"}>
         {Object.hasOwn(post.data, "poster") ?
-          <Text>{post.data.poster}</Text>
+          <Text>{users.filter(u => u._id == post.data.poster)[0].data.username}</Text>
         : <></>}
         <Text>{post.date.toString()}</Text>
       </View>
@@ -29,6 +31,7 @@ const Post = ({post}) => {
         resizeMode={"cover"}
       ></Image>
     </View>
+    :<></>
   )
 }
 
