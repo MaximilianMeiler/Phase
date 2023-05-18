@@ -49,7 +49,10 @@ export default function App() {
     getID();
     loadPosts();
     loadUsers();
-    setUser(users.filter(u => u._id == user._id)[0])
+    var matches = users.filter(u => u._id == user._id);
+    if (matches.length > 0) {
+      setUser(matches[0])
+    }
     console.log("DATA FETCHED");
   }, [user.data.username, appPage, flag]);
 
