@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { AntDesign } from '@expo/vector-icons';
+import Fuse from "fuse.js";
 
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 
@@ -64,21 +65,55 @@ const Friends = ({baseUrl, user, users, flag, setFlag}) => {
     setFlag(flag+1);
   }
 
-  // useEffect(() => { //runs on first load
-  // }, [users]);
+  const addReq = async (id1, id2) => {
+    await fetch(`${baseUrl}/users/reqadd/${id1}/${id2}`, {
+      method: "PATCH",
+    }).catch((e) => console.log(e))
+
+    // frontend change
+    users.filter(u => u._id == id1)[0].data.requests = 
+      users.filter(u => u._id == id1)[0].data.requests.concat([id2]);
+    setFlag(flag+1);
+  }
+
+  const displayResults = () => {
+
+    var fuse = new Fuse(users, {keys: ["data.username"]} )
+    var results = fuse.search(search)
+    var filtered = results.filter(r => user.data.friends.indexOf(r.item._id) < 0 
+      && user.data.requests.indexOf(r.item._id) < 0
+      && r.item.data.requests.indexOf(user._id) < 0)
+
+    return (
+      filtered.map(r => {
+        return (
+          <View flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+            <View marginVertical={5} marginLeft={10}>
+              <Text>{r.item.data.username}</Text>
+              <Text style={{color: "#a29f9f"}}>{r.item._id}</Text>
+            </View>
+            <TouchableOpacity onPress={() => addReq(user._id, r.item._id)}>
+              <AntDesign name='adduser' size={25} marginHorizontal={10}/>
+            </TouchableOpacity>
+          </View>
+        )
+      })
+    )
+  }
 
   return (
     <ScrollView height={WINDOW_HEIGHT} paddingTop={50}>
       <View flexDirection={"row"} justifyContent={"center"}>
         <TextInput 
           placeholder='Search for friend...' 
-          onChange={val => setSearch(val)} 
+          onChangeText={val => setSearch(val)} 
           onFocus={() => setSearching(true)} 
           fontSize={20}
           marginLeft={30}
+          marginBottom={20}
         ></TextInput>
         {searching ? 
-        <TouchableOpacity onPress={() => setSearching(false)}>
+        <TouchableOpacity onPress={() => {setSearching(false)}}>
           <AntDesign name='close' size={25} marginHorizontal={10}/>
         </TouchableOpacity>
         : <></>}
@@ -133,7 +168,11 @@ const Friends = ({baseUrl, user, users, flag, setFlag}) => {
           )
         }
       </View>
-      : <Text>Search criteria matches</Text>}
+      : 
+      <View>
+        {displayResults()}
+      </View>
+      }
     </ScrollView>
   );
 }
