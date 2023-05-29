@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Button,
   Image,
+  TextInput
 } from 'react-native';
 import { Camera } from 'expo-camera';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
@@ -34,6 +35,7 @@ const CameraScr = ({baseUrl, user}) => {
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [image, setImage] = useState(null);
   const [thisCodeSucks, setThisCodeSucks] = useState(false);
+  const [title, setTitle] = useState("Untitled Post");
   
   useEffect(() => { //runs on first load
     onHandlePermission();
@@ -87,34 +89,6 @@ const CameraScr = ({baseUrl, user}) => {
   
         let base64Img = `data:image/jpg;base64,${source}`;
         setImage(base64Img);
-        let apiUrl =
-          'https://api.cloudinary.com/v1_1/dkatw72ac/image/upload';
-        let data = {
-          file: base64Img,
-          upload_preset: 'lpocrtuh'
-        };
-  
-
-
-        fetch(apiUrl, { //this places image on cloudinary
-          body: JSON.stringify(data),
-          headers: {
-            'content-type': 'application/json'
-          },
-          method: 'POST'
-        })
-          .then(async response => {
-            let data = await response.json();
-            if (data.secure_url) {
-              newPost({ //places cloudinary link on mongo
-                imageLink: data.secure_url,
-                poster: user._id,
-              })
-            }
-          })
-          .catch(err => {
-            alert('Cannot upload');
-          });
       }
     }
   };
@@ -122,7 +96,42 @@ const CameraScr = ({baseUrl, user}) => {
   const cancelPreview = async () => {
     await cameraRef.current.resumePreview();
     setIsPreview(false);
+    setImage(null);
+    setThisCodeSucks(false);
   };
+
+  const confirmPost = async () => {
+    if (image) {
+      let apiUrl =
+        'https://api.cloudinary.com/v1_1/dkatw72ac/image/upload';
+      let data = {
+        file: image,
+        upload_preset: 'lpocrtuh'
+      };
+
+      fetch(apiUrl, { //this places image on cloudinary
+        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json'
+        },
+        method: 'POST'
+      })
+        .then(async response => {
+          let data = await response.json();
+          if (data.secure_url) {
+            newPost({ //places cloudinary link on mongo
+              imageLink: data.secure_url,
+              poster: user._id,
+            })
+          }
+        })
+        .catch(err => {
+          alert('Cannot upload');
+        });
+
+      cancelPreview();
+    }
+  }
 
   if (hasPermission === null) {
     <View style={styles.container}>
@@ -169,25 +178,41 @@ const CameraScr = ({baseUrl, user}) => {
         }}
       >{"Recording Audio..."}</Text>
       <View >
-        {isPreview && (
-          <View>
-            <TouchableOpacity
-              onPress={cancelPreview}
-              style={styles.bottomButtonsContainer}
-              activeOpacity={0.7}
-            >
-              <AntDesign name='close' size={40} bottom={25} left={18} color='#fff' />
-            </TouchableOpacity>
+        {isPreview && image ?
+          <View alignItems="center">
+            <Image 
+              source={{uri: image}} 
+              height={WINDOW_WIDTH} width={WINDOW_WIDTH * 3 / 4} 
+              paddingTop={200}></Image>
+            <Text 
+              style={{color:"#fff", fontSize:25}}
+              paddingVertical={15}
+            >{"Title your post..."}</Text>
+            <TextInput 
+              placeholder="Untitled Post" 
+              onChangeText={val => setTitle(val)}
+              backgroundColor="#fff"
+              height={40}
+              width={240}
+            ></TextInput>
 
-            {image ? 
-            <Image source={{
-              uri: image,
-            }} height={200} width={200} paddingTop={200}></Image>
-            : <></>}
-
-            
+            <View flexDirection="row" paddingTop={50}>
+              <TouchableOpacity
+                onPress={() => cancelPreview()}
+                activeOpacity={0.7}
+              >
+                <AntDesign name='close' size={60} color='#fff' marginRight={45}/>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => confirmPost()}
+                activeOpacity={0.7}
+              >
+                <AntDesign name='check' size={60} color='#fff' />
+              </TouchableOpacity>
+            </View>
           </View>
-        )}
+          : <></>
+        }
         {!isPreview && (
         <View>
           <View style={styles.bottomButtonsContainer} >
