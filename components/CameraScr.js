@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   Button,
+  Image,
 } from 'react-native';
 import { Camera } from 'expo-camera';
 import { AntDesign, MaterialIcons } from '@expo/vector-icons';
@@ -31,6 +32,8 @@ const CameraScr = ({baseUrl, user}) => {
   const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
   const [isPreview, setIsPreview] = useState(false);
   const [isCameraReady, setIsCameraReady] = useState(false);
+  const [image, setImage] = useState(null);
+  const [thisCodeSucks, setThisCodeSucks] = useState(false);
   
   useEffect(() => { //runs on first load
     onHandlePermission();
@@ -73,7 +76,9 @@ const CameraScr = ({baseUrl, user}) => {
   const onSnap = async () => {
     if (cameraRef.current) {
       const options = { quality: 0.7, base64: true };
+      setThisCodeSucks(true);
       const data = await cameraRef.current.takePictureAsync(options);
+      console.log("pic taken")
       const source = data.base64;
   
       if (source) {
@@ -81,6 +86,7 @@ const CameraScr = ({baseUrl, user}) => {
         setIsPreview(true);
   
         let base64Img = `data:image/jpg;base64,${source}`;
+        setImage(base64Img);
         let apiUrl =
           'https://api.cloudinary.com/v1_1/dkatw72ac/image/upload';
         let data = {
@@ -88,6 +94,8 @@ const CameraScr = ({baseUrl, user}) => {
           upload_preset: 'lpocrtuh'
         };
   
+
+
         fetch(apiUrl, { //this places image on cloudinary
           body: JSON.stringify(data),
           headers: {
@@ -135,35 +143,64 @@ const CameraScr = ({baseUrl, user}) => {
       backgroundColor={'#000'} 
       paddingTop={(WINDOW_HEIGHT - DIMENSION_RATIO[0]*RATIO_UNIT) / 4}
       paddingBottom={(WINDOW_HEIGHT - DIMENSION_RATIO[0]*RATIO_UNIT) / 4*3}
+      height={WINDOW_HEIGHT}
     >
       <Camera
         // useCamera2Api={true}
         ref={cameraRef}
-        style={styles.container}
         type={cameraType}
         onCameraReady={onCameraReady}
+        style={{
+          height: !isPreview ? DIMENSION_RATIO[0] * RATIO_UNIT : 0,
+          width: DIMENSION_RATIO[1] * RATIO_UNIT,
+        }}
       />
+      <Text 
+        height={thisCodeSucks && !isPreview ? DIMENSION_RATIO[0] * RATIO_UNIT : 0}
+        marginBottom={300}
+        style={{
+          color:"#fff",
+          fontSize:50,
+          textAlign:"center",
+          textAlignVertical:"center",
+          position:"absolute",
+          bottom:-50,
+          alignSelf:"center"
+        }}
+      >{"Recording Audio..."}</Text>
       <View >
         {isPreview && (
-          <TouchableOpacity
-            onPress={cancelPreview}
-            style={styles.bottomButtonsContainer}
-            activeOpacity={0.7}
-          >
-            <AntDesign name='close' size={40} bottom={25} left={18} color='#fff' />
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity
+              onPress={cancelPreview}
+              style={styles.bottomButtonsContainer}
+              activeOpacity={0.7}
+            >
+              <AntDesign name='close' size={40} bottom={25} left={18} color='#fff' />
+            </TouchableOpacity>
+
+            {image ? 
+            <Image source={{
+              uri: image,
+            }} height={200} width={200} paddingTop={200}></Image>
+            : <></>}
+
+            
+          </View>
         )}
         {!isPreview && (
-        <View style={styles.bottomButtonsContainer}>
-          <TouchableOpacity disabled={!isCameraReady} onPress={switchCamera}>
-            <MaterialIcons name='flip-camera-ios' size={40} color='white' />
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            disabled={!isCameraReady}
-            onPress={onSnap}
-            style={styles.capture}
-          />
+        <View>
+          <View style={styles.bottomButtonsContainer} >
+            <TouchableOpacity disabled={!isCameraReady} onPress={switchCamera}>
+              <MaterialIcons name='flip-camera-ios' size={40} color='white' />
+            </TouchableOpacity>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              disabled={!isCameraReady}
+              onPress={onSnap}
+              style={styles.capture}
+            />
+          </View>
         </View>
         )}
       </View>
@@ -185,11 +222,10 @@ const styles = StyleSheet.create({
     color: '#000'
   },
   bottomButtonsContainer: {
-    position: 'absolute',
     flexDirection: 'row',
     width: '100%',
-    bottom: 0,
-    right: 18,
+    // bottom: DIMENSION_RATIO[0] * RATIO_UNIT * 1.5 + 30,
+    // right: 18,
     alignItems: 'center',
     justifyContent: 'center'
   },

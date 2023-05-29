@@ -2,6 +2,7 @@ import Home from './components/Home'
 import CameraScr from "./components/CameraScr"
 import Friends from "./components/Friends"
 import Signin from "./components/Signin"
+import User from "./components/User"
 import * as SecureStore from 'expo-secure-store';
 import React, { useState, useEffect } from 'react';
 import {
@@ -63,6 +64,8 @@ export default function App() {
       return <CameraScr baseUrl={baseUrl} user={user}/>
     } else if (appPage == "F") {
       return <Friends baseUrl={baseUrl} user={user} users={users} flag={flag} setFlag={setFlag}/>
+    } else if (appPage == "U") {
+      return <User baseUrl={baseUrl} user={user} users={users} flag={flag} setFlag={setFlag}/>
     }
   }
 
@@ -78,7 +81,7 @@ export default function App() {
         <TouchableOpacity style={{backgroundColor: homeColor}} onPress={() => setAppPage('H')}>
           <Text style={styles.midBox}>Home</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{backgroundColor: userColor}} onPress={() => setAppPage('H')}>
+        <TouchableOpacity style={{backgroundColor: userColor}} onPress={() => setAppPage('U')}>
           <Text style={styles.sideBox}>User</Text>
         </TouchableOpacity>
       </View>
