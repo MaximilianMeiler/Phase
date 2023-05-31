@@ -6,7 +6,7 @@ import {
   Dimensions,
   View,
   Text,
-  Button,
+  TouchableOpacity,
   TextInput,
 } from 'react-native';
 import { useState, useEffect } from 'react';
@@ -74,10 +74,44 @@ const Signin = ({user, setUser, baseUrl}) => {
   return (
     user.data.username.length == 0 ?
       <View height={WINDOW_HEIGHT} justifyContent={'center'} alignItems={'center'}>
-        <Button title="Login" onPress={() => login()}></Button>
-        <Text>Or, enter a username to signup:</Text>
-        <TextInput placeholder='SwagLord420' onChangeText={val => setTextVal(val)} ></TextInput>
-        <Button title="Register" onPress={() => updateID()}></Button>
+        {/* <Text style={{fontWeight:"bold", fontSize:50}}>Welcome to</Text> */}
+        <Text style={{fontWeight:"bold", fontSize:75}}>Phase</Text>
+        <TouchableOpacity 
+          onPress={() => login()}
+          style={{
+            backgroundColor:"#ccccff",
+            borderRadius:15,
+            paddingVertical:15,
+            paddingHorizontal:15,
+            marginTop: 25,
+          }}
+        >
+          <Text style={{
+            fontSize:18,
+            fontWeight:"bold"
+          }}>Login with existing account</Text>
+        </TouchableOpacity>
+        <Text style={{
+          fontSize:15,
+          marginTop:45,
+          marginBottom:10
+        }}>Or, enter a username to sign up:</Text>
+        <TextInput placeholder='Username...' onChangeText={val => setTextVal(val)} ></TextInput>
+        <TouchableOpacity 
+          onPress={() => updateID()}
+          style={{
+            backgroundColor:"#ccccff",
+            borderRadius:10,
+            paddingVertical:10,
+            paddingHorizontal:10,
+            marginTop: 10,
+          }}
+        >
+          <Text style={{
+            fontSize:15,
+            fontWeight:"bold"
+          }}>Register</Text>
+        </TouchableOpacity>
       </View>
     : <></>
   )
