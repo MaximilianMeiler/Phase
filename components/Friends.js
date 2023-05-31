@@ -87,7 +87,7 @@ const Friends = ({baseUrl, user, users, flag, setFlag}) => {
     return (
       filtered.map(r => {
         return (
-          <View flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+          <View flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"} key={r}>
             <View marginVertical={5} marginLeft={10}>
               <Text>{r.item.data.username}</Text>
               <Text style={{color: "#a29f9f"}}>{r.item._id}</Text>
@@ -123,7 +123,7 @@ const Friends = ({baseUrl, user, users, flag, setFlag}) => {
         <Text style={{textDecorationLine:"underline"}}>Incoming</Text>
         {users.filter(u => u.data.requests.indexOf(user._id) >= 0)
           .map(u => 
-            <View flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+            <View flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"} key={u._id}>
               <View marginVertical={5} marginLeft={10}>
                 <Text>{u.data.username}</Text>
                 <Text style={{color: "#a29f9f"}}>{u._id}</Text>
@@ -142,7 +142,7 @@ const Friends = ({baseUrl, user, users, flag, setFlag}) => {
         <Text style={{textDecorationLine:"underline"}} marginTop={10}>Requested</Text>
         {users.filter(u => user.data.requests.indexOf(u._id) >= 0)
           .map(u => 
-            <View flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+            <View flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"} key={u._id}>
               <View marginVertical={5} marginLeft={10}>
                 <Text>{u.data.username}</Text>
                 <Text style={{color: "#a29f9f"}}>{u._id}</Text>
@@ -156,7 +156,7 @@ const Friends = ({baseUrl, user, users, flag, setFlag}) => {
         <Text style={{textDecorationLine:"underline"}} marginTop={10}>Added</Text>
         {users.filter(u => user.data.friends.indexOf(u._id) >= 0)
           .map(u => 
-            <View flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
+            <View flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"} key={u._id}>
               <View marginVertical={5} marginLeft={10}>
                 <Text>{u.data.username}</Text>
                 <Text style={{color: "#a29f9f"}}>{u._id}</Text>
