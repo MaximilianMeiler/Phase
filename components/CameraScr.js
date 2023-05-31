@@ -122,6 +122,7 @@ const CameraScr = ({baseUrl, user}) => {
             newPost({ //places cloudinary link on mongo
               imageLink: data.secure_url,
               poster: user._id,
+              title: title
             })
           }
         })

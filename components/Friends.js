@@ -120,7 +120,7 @@ const Friends = ({baseUrl, user, users, flag, setFlag}) => {
       </View>
       {!searching ? 
       <View marginLeft={10}>
-        <Text>Incoming</Text>
+        <Text style={{textDecorationLine:"underline"}}>Incoming</Text>
         {users.filter(u => u.data.requests.indexOf(user._id) >= 0)
           .map(u => 
             <View flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
@@ -139,7 +139,7 @@ const Friends = ({baseUrl, user, users, flag, setFlag}) => {
             </View>
           )
         }
-        <Text>Requested</Text>
+        <Text style={{textDecorationLine:"underline"}} marginTop={10}>Requested</Text>
         {users.filter(u => user.data.requests.indexOf(u._id) >= 0)
           .map(u => 
             <View flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>
@@ -153,7 +153,7 @@ const Friends = ({baseUrl, user, users, flag, setFlag}) => {
             </View>
           )
         }
-        <Text>Added</Text>
+        <Text style={{textDecorationLine:"underline"}} marginTop={10}>Added</Text>
         {users.filter(u => user.data.friends.indexOf(u._id) >= 0)
           .map(u => 
             <View flexDirection={"row"} justifyContent={"space-between"} alignItems={"center"}>

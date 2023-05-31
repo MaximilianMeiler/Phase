@@ -39,15 +39,15 @@ const Post = ({post, users}) => {
     users.length > 0 ?
     <View marginVertical={10}>
       {Object.hasOwn(post.data, "title") ?
-          <Text>{post.data.title}</Text>
+          <Text style={{fontWeight:"bold", fontSize:25}}>{post.data.title}</Text>
       : <></>}
         
       <View flexDirection={"row"} justifyContent={"space-between"}>
         {Object.hasOwn(post.data, "poster") ?
-          <Text>{users.filter(u => u._id == post.data.poster)[0].data.username}</Text>
+          <Text style={{fontSize:18}}>{users.filter(u => u._id == post.data.poster)[0].data.username}</Text>
         : <></>}
         {Object.hasOwn(post, "date") ?
-          <Text>{parseDate()}</Text>
+          <Text style={{fontSize:16}}>{parseDate()}</Text>
         : <></>}
       </View>
 
