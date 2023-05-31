@@ -25,27 +25,36 @@ const options = {
 
 const User = ({baseUrl, user, users, flag, setFlag}) => {
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    ScreenAudioRecorder.on('data', (data) => {
-      console.log(data);
-    });
-  }, []);
+  //   ScreenAudioRecorder.on('data', (data) => {
+  //     console.log(data);
+  //   });
+  // }, []);
 
-  const start = () => {
-    ScreenAudioRecorder.init(options);
-    ScreenAudioRecorder.start();
-  };
+  // const start = () => {
+  //   ScreenAudioRecorder.init(options);
+  //   ScreenAudioRecorder.start();
+  // };
 
-  const stop = async () => {
-    const filePath = await ScreenAudioRecorder.stop();
-    setAudioFile(filePath);
-  };
+  // const stop = async () => {
+  //   const filePath = await ScreenAudioRecorder.stop();
+  //   setAudioFile(filePath);
+  // };
+
+  // return (
+  //   <ScrollView height={WINDOW_HEIGHT} >
+  //     <View marginTop={50}>
+  //       <Button  title="start" onPress={() => start()}></Button>
+  //     </View>
+  //   </ScrollView>
+  // );
 
   return (
-    <ScrollView height={WINDOW_HEIGHT} >
-      <View marginTop={50}>
-        <Button  title="start" onPress={() => start()}></Button>
+    <ScrollView height={WINDOW_HEIGHT} justifyContent="center" alignItems="center">
+      <View marginHorizontal={30}>
+        <Text style={{textAlign:"center", fontSize:30, fontWeight:"bold"}} marginBottom={25}>{"PAGE IN PROGRESS"}</Text>
+        <Text style={{textAlign:"center", fontSize:30}}>{"The ability to edit user settings will be introduced in a future update!"}</Text>
       </View>
     </ScrollView>
   );

@@ -177,7 +177,7 @@ const CameraScr = ({baseUrl, user}) => {
           bottom:-50,
           alignSelf:"center"
         }}
-      >{"Recording Audio..."}</Text>
+      >{"Processing Image..."}</Text>
       <View >
         {isPreview && image ?
           <View alignItems="center">
@@ -216,7 +216,7 @@ const CameraScr = ({baseUrl, user}) => {
         }
         {!isPreview && (
         <View>
-          <View style={styles.bottomButtonsContainer} >
+          <View style={styles.bottomButtonsContainer} justifyContent={"center"}>
             <TouchableOpacity disabled={!isCameraReady} onPress={switchCamera}>
               <MaterialIcons name='flip-camera-ios' size={40} color='white' />
             </TouchableOpacity>
@@ -253,7 +253,8 @@ const styles = StyleSheet.create({
     // bottom: DIMENSION_RATIO[0] * RATIO_UNIT * 1.5 + 30,
     // right: 18,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: 15
   },
   capture: {
     backgroundColor: '#fff',

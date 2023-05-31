@@ -81,7 +81,7 @@ export default function App() {
         <TouchableOpacity style={{backgroundColor: homeColor}} onPress={() => setAppPage('H')}>
           <Text style={styles.midBox}>Home</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={{backgroundColor: userColor}} onPress={() => setAppPage('U')}>
+        <TouchableOpacity style={{backgroundColor: userColor}} onPress={() => setAppPage('U')} >
           <Text style={styles.sideBox}>User</Text>
         </TouchableOpacity>
       </View>
@@ -107,14 +107,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   sideBox: {
-    fontSize: 20,
+    fontSize: 25,
     width: 100,
     paddingVertical: 10,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   midBox: {
     fontSize: 25,
     paddingHorizontal: 15,
     paddingVertical: 10,
+    fontWeight: "bold"
   },
 });
