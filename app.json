@@ -1,8 +1,8 @@
 {
   "expo": {
     "name": "Phase",
-    "slug": "Phase",
-    "version": "1.0.0",
+    "slug": "MobileApp",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/phaseIcon.png",
     "userInterfaceStyle": "light",
@@ -22,7 +22,8 @@
         "foregroundImage": "./assets/phaseIcon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.maximilianmeiler.Phase"
+      "package": "com.maximilianmeiler.Phase",
+      "versionCode": 2
     },
     "web": {
       "favicon": "./assets/favicon.png"
