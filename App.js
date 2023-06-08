@@ -4,6 +4,7 @@ import Friends from "./components/Friends"
 import Signin from "./components/Signin"
 import User from "./components/User"
 import * as SecureStore from 'expo-secure-store';
+import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
@@ -90,6 +91,7 @@ export default function App() {
 
   return (
       <View flexDirection={'column'}>
+        <StatusBar style="auto" />
         <Signin user={user} setUser={setUser} baseUrl={baseUrl}/>
         {activeScreen()}
         {footer()}
